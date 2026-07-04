@@ -1,5 +1,4 @@
 # Día 2 — Extracción, Calidad y Limpieza
-
 ## DataCommerce GT — Proyecto Final Integrador (Ingeniería de Datos)
 
 ## 1. Qué se hizo
@@ -74,14 +73,14 @@ intervención manual (regla del proyecto, `tarea.md` sección 7).
 
 ## 6. Las 6 tablas y su fuente real
 
-| Tabla                  | Fuente                                    | Origen                                 |
-| ---------------------- | ----------------------------------------- | -------------------------------------- |
-| ventas                 | CSV                                       | `data/raw/ventas.csv`                  |
-| productos              | Excel                                     | `data/raw/productos.xlsx`              |
-| clientes               | JSON                                      | `data/raw/clientes.json`               |
-| inventario_actual      | SQLite (tabla `inventario_actual`)        | `data/raw/inventario.db`               |
-| movimientos_inventario | SQLite (tabla `movimientos_inventario`)   | `data/raw/inventario.db`               |
-| campanas               | API REST (mock si no hay URL configurada) | `data/raw/api_marketing_response.json` |
+| Tabla | Fuente | Origen |
+|---|---|---|
+| ventas | CSV | `data/raw/ventas.csv` |
+| productos | Excel | `data/raw/productos.xlsx` |
+| clientes | JSON | `data/raw/clientes.json` |
+| inventario_actual | SQLite (tabla `inventario_actual`) | `data/raw/inventario.db` |
+| movimientos_inventario | SQLite (tabla `movimientos_inventario`) | `data/raw/inventario.db` |
+| campanas | API REST (mock si no hay URL configurada) | `data/raw/api_marketing_response.json` |
 
 ### Esquema real de columnas
 
@@ -153,25 +152,25 @@ la posición del año, que nunca es ambigua (siempre tiene 4 dígitos):
 
 ## 10. Reglas de limpieza aplicadas y su justificación
 
-| Tabla                  | Regla                                                             | Justificación                                                     |
-| ---------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------- |
-| ventas                 | Elimina duplicados por venta_id                                   | Un id de venta no puede repetirse                                 |
-| ventas                 | Normaliza fecha_venta (3 formatos mezclados)                      | Ver sección 9                                                     |
-| ventas                 | cantidad/descuento negativos → valor absoluto                     | No existen ventas ni descuentos negativos                         |
-| ventas                 | total_venta recalculado (cantidad × precio_unitario − descuento)  | No arrastrar errores de captura del archivo original              |
-| productos              | Elimina duplicados por producto_id                                | Un producto no puede repetirse en el catálogo                     |
-| productos              | Recorta espacios extra en campos de texto                         | Error común de captura manual                                     |
-| productos              | categoria/subcategoria nulas → "Sin Categoría"/"Sin Subcategoría" | No perder el producto en reportes agrupados                       |
-| productos              | precio_lista no convertible → se descarta la fila                 | No se puede vender un producto sin precio                         |
-| clientes               | Elimina duplicados por cliente_id                                 | Un cliente no puede repetirse                                     |
-| clientes               | municipio `""` → nulo                                             | String vacío no es un municipio válido (hallazgo real, sección 8) |
-| clientes               | fecha_registro normalizada                                        | Consistencia con el resto de fechas del proyecto                  |
-| inventario_actual      | Elimina duplicados por (producto_id, bodega)                      | Una bodega no puede tener 2 registros del mismo producto          |
-| inventario_actual      | existencia negativa → 0                                           | El stock físico nunca es negativo                                 |
-| movimientos_inventario | Elimina duplicados por id                                         | Es la llave primaria del movimiento                               |
-| movimientos_inventario | cantidad negativa → valor absoluto                                | La dirección la indica `tipo`; cantidad es la magnitud            |
-| campañas               | Elimina duplicados por campaña_id                                 | Una campaña no puede repetirse                                    |
-| campañas               | impresiones/clics/costo/leads/conversiones negativos → 0          | Son métricas de conteo o gasto, nunca negativas                   |
+| Tabla | Regla | Justificación |
+|---|---|---|
+| ventas | Elimina duplicados por venta_id | Un id de venta no puede repetirse |
+| ventas | Normaliza fecha_venta (3 formatos mezclados) | Ver sección 9 |
+| ventas | cantidad/descuento negativos → valor absoluto | No existen ventas ni descuentos negativos |
+| ventas | total_venta recalculado (cantidad × precio_unitario − descuento) | No arrastrar errores de captura del archivo original |
+| productos | Elimina duplicados por producto_id | Un producto no puede repetirse en el catálogo |
+| productos | Recorta espacios extra en campos de texto | Error común de captura manual |
+| productos | categoria/subcategoria nulas → "Sin Categoría"/"Sin Subcategoría" | No perder el producto en reportes agrupados |
+| productos | precio_lista no convertible → se descarta la fila | No se puede vender un producto sin precio |
+| clientes | Elimina duplicados por cliente_id | Un cliente no puede repetirse |
+| clientes | municipio `""` → nulo | String vacío no es un municipio válido (hallazgo real, sección 8) |
+| clientes | fecha_registro normalizada | Consistencia con el resto de fechas del proyecto |
+| inventario_actual | Elimina duplicados por (producto_id, bodega) | Una bodega no puede tener 2 registros del mismo producto |
+| inventario_actual | existencia negativa → 0 | El stock físico nunca es negativo |
+| movimientos_inventario | Elimina duplicados por id | Es la llave primaria del movimiento |
+| movimientos_inventario | cantidad negativa → valor absoluto | La dirección la indica `tipo`; cantidad es la magnitud |
+| campañas | Elimina duplicados por campaña_id | Una campaña no puede repetirse |
+| campañas | impresiones/clics/costo/leads/conversiones negativos → 0 | Son métricas de conteo o gasto, nunca negativas |
 
 ## 11. Chequeo automático (self-check)
 
@@ -181,3 +180,9 @@ no debería haberlos). Si algo se rompe, el script falla con un
 `AssertionError` explícito en vez de guardar datos incorrectos
 silenciosamente. No es una prueba exhaustiva — es el chequeo mínimo que
 demuestra que la lógica no está rota.
+
+## 12. Qué sigue (Día 3 en adelante)
+
+Fuera del alcance del día 2: modelo dimensional, tablas de hechos y
+dimensiones, carga al Data Warehouse (`tarea.md`, sección 9).
+`data/processed/*.parquet` queda listo como insumo para ese paso.
