@@ -1,0 +1,9 @@
+__pycache__/
+*.pyc
+
+# Clave de la cuenta de servicio: JAMÁS se sube al repo
+credenciales_bigquery.json
+*.json.key
+
+# Salidas generadas por el pipeline: se regeneran ejecutando ejecutar_dia3.py
+data/dw/*.parquet
