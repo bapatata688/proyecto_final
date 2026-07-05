@@ -1,9 +1,6 @@
-"""Extracción de las fuentes: lee cada archivo/API tal cual viene,
-sin transformar nada. La limpieza vive en clean.py.
+"""Extracción de las fuentes: leemos cada archivo/API tal cual viene,
+sin transformar nada
 
-inventario.db trae 2 tablas (inventario_actual y movimientos_inventario),
-así que se extraen por separado: cada una tiene su propia llave y sus
-propias reglas de limpieza.
 """
 
 import json

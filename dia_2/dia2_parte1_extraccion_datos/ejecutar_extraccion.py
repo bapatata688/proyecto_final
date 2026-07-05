@@ -1,8 +1,7 @@
-"""Ejecuta la extracción de las fuentes y guarda cada una en
-data/interim/ tal cual viene, sin limpiar (evidencia del paso de
-extracción del día 2, separada de la limpieza).
+"""Ejecutamos la extracción de las fuentes y guardamos cada una en
+data/interim/ tal cual viene, sin limpiar  para que sea una evidencia del paso de
+extracción del día 2, separada de la limpieza
 
-Uso: python ejecutar_extraccion.py
 """
 
 import logging

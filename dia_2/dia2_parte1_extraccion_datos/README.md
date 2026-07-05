@@ -3,10 +3,6 @@
 
 ## 1. Qué se hizo
 
-Según el cronograma del proyecto (`tarea.md`, Día 2): extraer datos de las 5
-fuentes, documentar los hallazgos de calidad y desarrollar la limpieza y
-estandarización.
-
 Se trabajó directamente sobre los 5 archivos reales entregados por el
 instructor (`ventas.csv`, `productos.xlsx`, `clientes.json`, `inventario.db`,
 `api_marketing_response.json`) — no se usaron datos inventados.
@@ -14,11 +10,8 @@ instructor (`ventas.csv`, `productos.xlsx`, `clientes.json`, `inventario.db`,
 `movimientos_inventario`), así que el pipeline extrae y limpia **6 tablas**
 en total.
 
-## 2. Los dos ZIP — IMPORTANTE
+## 2. Partes divididas
 
-**Extrae ambos ZIP en la misma carpeta antes de ejecutar nada.** La parte 2
-depende de `config.py` y de los datos que genera la parte 1 en
-`data/interim/`.
 
 - **Parte 1 — Extracción**: `config.py`, `extract.py`, el script de
   extracción, los 5 archivos fuente entregados, y su resultado ya extraído
@@ -91,12 +84,6 @@ intervención manual (regla del proyecto, `tarea.md` sección 7).
 - **movimientos_inventario**: id, producto_id, fecha, tipo (Entrada/Salida), cantidad
 - **campanas** (desde la clave `campaigns` del JSON): campaña_id, fecha, plataforma, impresiones, clics, costo, leads, conversiones
 
-**Nota sobre volumen:** los archivos entregados tienen solo encabezados y
-unas pocas filas de ejemplo. Ningún script asume un número fijo de filas:
-funcionarán igual cuando el instructor entregue el volumen completo,
-siempre que se mantengan estos mismos nombres de columna. Si un archivo
-real trae una columna con otro nombre, hay que ajustarlo en `extract.py` y
-`clean.py` — son los únicos dos archivos que los referencian.
 
 ## 7. Placeholder de la API de campañas
 
@@ -109,11 +96,8 @@ real trae una columna con otro nombre, hay que ajustarlo en `extract.py` y
    inválida: la falla se registra como advertencia y el pipeline sigue sin
    detenerse.
 
-Cuando el instructor entregue la API real: definir `API_CAMPANAS_URL` (y
-`API_CAMPANAS_KEY` si requiere autenticación) en `.env`, y volver a correr
-`ejecutar_extraccion.py`. No hay que tocar código.
 
-## 8. Hallazgos de calidad reales (resumen)
+## 8. Hallazgos de calidad reales 
 
 El reporte completo, generado automáticamente, está en
 `reports/hallazgos_calidad.md`. Con 2 a 5 filas por fuente los hallazgos son
@@ -133,7 +117,7 @@ limitados, pero ya aparecen problemas concretos:
   Puede ser normal (producto sin stock aún) o un hueco de datos — vale la
   pena confirmarlo con el instructor cuando llegue el volumen completo.
 
-## 9. Decisión técnica destacada: parseo de fechas mixtas
+## 9. Decisión técnica parseo de fechas mixtas
 
 `pd.to_datetime(..., format="mixed", dayfirst=True)` parece la solución
 obvia para una columna con formatos de fecha mezclados, pero se probó
@@ -172,7 +156,7 @@ la posición del año, que nunca es ambigua (siempre tiene 4 dígitos):
 | campañas | Elimina duplicados por campaña_id | Una campaña no puede repetirse |
 | campañas | impresiones/clics/costo/leads/conversiones negativos → 0 | Son métricas de conteo o gasto, nunca negativas |
 
-## 11. Chequeo automático (self-check)
+## 11. self-check
 
 `ejecutar_limpieza.py` valida, después de limpiar cada tabla, que sus
 propias reglas se cumplieron (sin duplicados por llave, sin negativos donde
@@ -180,9 +164,3 @@ no debería haberlos). Si algo se rompe, el script falla con un
 `AssertionError` explícito en vez de guardar datos incorrectos
 silenciosamente. No es una prueba exhaustiva — es el chequeo mínimo que
 demuestra que la lógica no está rota.
-
-## 12. Qué sigue (Día 3 en adelante)
-
-Fuera del alcance del día 2: modelo dimensional, tablas de hechos y
-dimensiones, carga al Data Warehouse (`tarea.md`, sección 9).
-`data/processed/*.parquet` queda listo como insumo para ese paso.
