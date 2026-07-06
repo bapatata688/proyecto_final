@@ -1,0 +1,161 @@
+{
+  "ventas_por_canal": [
+    {
+      "canal_venta": "Tienda",
+      "num_ventas": 2,
+      "ventas_totales": 9890,
+      "ticket_promedio": 4945.0
+    },
+    {
+      "canal_venta": "Web",
+      "num_ventas": 2,
+      "ventas_totales": 6875,
+      "ticket_promedio": 3437.5
+    },
+    {
+      "canal_venta": "WhatsApp",
+      "num_ventas": 1,
+      "ventas_totales": 1200,
+      "ticket_promedio": 1200.0
+    }
+  ],
+  "top_productos": [
+    {
+      "nombre_producto": "Laptop Pro 14",
+      "categoria": "Computo",
+      "unidades_vendidas": 2,
+      "monto_vendido": 9000
+    },
+    {
+      "nombre_producto": "Monitor 27",
+      "categoria": "Monitores",
+      "unidades_vendidas": 6,
+      "monto_vendido": 7325
+    },
+    {
+      "nombre_producto": "Teclado Mecanico",
+      "categoria": "Accesorios",
+      "unidades_vendidas": 1,
+      "monto_vendido": 890
+    },
+    {
+      "nombre_producto": "Mouse Inalambrico",
+      "categoria": "Accesorios",
+      "unidades_vendidas": 3,
+      "monto_vendido": 750
+    }
+  ],
+  "ventas_por_sucursal": [
+    {
+      "nombre_sucursal": "Sucursal 1",
+      "num_ventas": 2,
+      "ventas_totales": 9750
+    },
+    {
+      "nombre_sucursal": "Sucursal 2",
+      "num_ventas": 2,
+      "ventas_totales": 7325
+    },
+    {
+      "nombre_sucursal": "Sucursal 3",
+      "num_ventas": 1,
+      "ventas_totales": 890
+    }
+  ],
+  "metodo_pago_mas_usado": [
+    {
+      "metodo_pago": "Tarjeta",
+      "num_ventas": 2,
+      "monto_total": 9890
+    },
+    {
+      "metodo_pago": "Transferencia",
+      "num_ventas": 2,
+      "monto_total": 6875
+    },
+    {
+      "metodo_pago": "Efectivo",
+      "num_ventas": 1,
+      "monto_total": 1200
+    }
+  ],
+  "top_clientes": [
+    {
+      "nombre": "Ana López",
+      "segmento_cliente": "Premium",
+      "num_compras": 2,
+      "monto_total": 9890
+    },
+    {
+      "nombre": "Cliente desconocido",
+      "segmento_cliente": "N/A",
+      "num_compras": 1,
+      "monto_total": 6125
+    },
+    {
+      "nombre": "Carlos Pérez",
+      "segmento_cliente": "Frecuente",
+      "num_compras": 1,
+      "monto_total": 1200
+    },
+    {
+      "nombre": "María Gómez",
+      "segmento_cliente": "Nuevo",
+      "num_compras": 1,
+      "monto_total": 750
+    }
+  ],
+  "existencia_inventario": [
+    {
+      "nombre_producto": "Laptop Pro 14",
+      "bodega": "Central",
+      "existencia": 15
+    },
+    {
+      "nombre_producto": "Monitor 27",
+      "bodega": "Central",
+      "existencia": 40
+    },
+    {
+      "nombre_producto": "Mouse Inalambrico",
+      "bodega": "Central",
+      "existencia": 120
+    }
+  ],
+  "desempeno_marketing": [
+    {
+      "plataforma": "Facebook",
+      "impresiones": 12000,
+      "clics": 420,
+      "costo_total": 150.5,
+      "leads": 30,
+      "conversiones": 8,
+      "ctr_pct": 3.5,
+      "costo_por_lead": 5.02,
+      "tasa_conversion_pct": 1.9
+    },
+    {
+      "plataforma": "Instagram",
+      "impresiones": 9800,
+      "clics": 350,
+      "costo_total": 110.0,
+      "leads": 22,
+      "conversiones": 6,
+      "ctr_pct": 3.57,
+      "costo_por_lead": 5.0,
+      "tasa_conversion_pct": 1.71
+    }
+  ],
+  "movimientos_inventario_por_tipo": [
+    {
+      "tipo": "Entrada",
+      "num_movimientos": 1,
+      "unidades_movidas": 10
+    },
+    {
+      "tipo": "Salida",
+      "num_movimientos": 1,
+      "unidades_movidas": 2
+    }
+  ]
+}

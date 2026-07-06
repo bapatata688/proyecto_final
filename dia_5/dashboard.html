@@ -1,0 +1,285 @@
+<div id="app"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --navy:#12213b; --navy-2:#1c3255; --ice:#cfe0ff; --accent:#3ba7ff;
+    --accent-2:#ffb547; --bg:#f5f7fb; --card:#ffffff; --text:#1a2333; --muted:#6b7590;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:'Calibri',Arial,sans-serif;background:var(--bg);color:var(--text);}
+  .header{background:linear-gradient(135deg,var(--navy),var(--navy-2));color:#fff;padding:28px 32px;}
+  .header h1{margin:0;font-size:24px;font-weight:700;}
+  .header p{margin:6px 0 0;color:var(--ice);font-size:13px;}
+  .wrap{padding:24px 32px 48px;max-width:1280px;margin:0 auto;}
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
+  .kpi-card{background:var(--card);border-radius:10px;padding:18px 20px;box-shadow:0 1px 3px rgba(18,33,59,0.08);}
+  .kpi-card .label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;}
+  .kpi-card .value{font-size:28px;font-weight:700;color:var(--navy);margin-top:6px;}
+  .kpi-card .sub{font-size:12px;color:var(--muted);margin-top:4px;}
+  .grid2{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;margin-bottom:20px;}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:20px;}
+  .panel{background:var(--card);border-radius:10px;padding:20px;box-shadow:0 1px 3px rgba(18,33,59,0.08);}
+  .panel h3{margin:0 0 14px;font-size:15px;color:var(--navy);}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{text-align:left;color:var(--muted);font-weight:600;padding:6px 8px;border-bottom:1px solid #e6e9f0;font-size:11px;text-transform:uppercase;}
+  td{padding:8px 8px;border-bottom:1px solid #eef1f6;}
+  .badge{display:inline-block;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600;}
+  .badge-premium{background:#e6f0ff;color:#1a5fcf;}
+  .badge-frecuente{background:#e6fbf1;color:#0d8a5a;}
+  .badge-nuevo{background:#fff3e0;color:#c07a12;}
+  .badge-na{background:#eee;color:#888;}
+  canvas{max-height:260px;}
+  .note{font-size:12px;color:var(--muted);margin-top:24px;text-align:center;}
+</style>
+<div id="dashboard-root"></div>
+<script>
+// ===DATOS_INICIO=== (no borres estos comentarios: actualizar_dashboard.py los usa para reemplazar los datos)
+const datos = {
+  "ventas_por_canal": [
+    {
+      "canal_venta": "Tienda",
+      "num_ventas": 2,
+      "ventas_totales": 9890,
+      "ticket_promedio": 4945.0
+    },
+    {
+      "canal_venta": "Web",
+      "num_ventas": 2,
+      "ventas_totales": 6875,
+      "ticket_promedio": 3437.5
+    },
+    {
+      "canal_venta": "WhatsApp",
+      "num_ventas": 1,
+      "ventas_totales": 1200,
+      "ticket_promedio": 1200.0
+    }
+  ],
+  "top_productos": [
+    {
+      "nombre_producto": "Laptop Pro 14",
+      "categoria": "Computo",
+      "unidades_vendidas": 2,
+      "monto_vendido": 9000
+    },
+    {
+      "nombre_producto": "Monitor 27",
+      "categoria": "Monitores",
+      "unidades_vendidas": 6,
+      "monto_vendido": 7325
+    },
+    {
+      "nombre_producto": "Teclado Mecanico",
+      "categoria": "Accesorios",
+      "unidades_vendidas": 1,
+      "monto_vendido": 890
+    },
+    {
+      "nombre_producto": "Mouse Inalambrico",
+      "categoria": "Accesorios",
+      "unidades_vendidas": 3,
+      "monto_vendido": 750
+    }
+  ],
+  "ventas_por_sucursal": [
+    {
+      "nombre_sucursal": "Sucursal 1",
+      "num_ventas": 2,
+      "ventas_totales": 9750
+    },
+    {
+      "nombre_sucursal": "Sucursal 2",
+      "num_ventas": 2,
+      "ventas_totales": 7325
+    },
+    {
+      "nombre_sucursal": "Sucursal 3",
+      "num_ventas": 1,
+      "ventas_totales": 890
+    }
+  ],
+  "metodo_pago": [
+    {
+      "metodo_pago": "Tarjeta",
+      "num_ventas": 2,
+      "monto_total": 9890
+    },
+    {
+      "metodo_pago": "Transferencia",
+      "num_ventas": 2,
+      "monto_total": 6875
+    },
+    {
+      "metodo_pago": "Efectivo",
+      "num_ventas": 1,
+      "monto_total": 1200
+    }
+  ],
+  "top_clientes": [
+    {
+      "nombre": "Ana López",
+      "segmento": "Premium",
+      "num_compras": 2,
+      "monto_total": 9890
+    },
+    {
+      "nombre": "Cliente desconocido",
+      "segmento": "N/A",
+      "num_compras": 1,
+      "monto_total": 6125
+    },
+    {
+      "nombre": "Carlos Pérez",
+      "segmento": "Frecuente",
+      "num_compras": 1,
+      "monto_total": 1200
+    },
+    {
+      "nombre": "María Gómez",
+      "segmento": "Nuevo",
+      "num_compras": 1,
+      "monto_total": 750
+    }
+  ],
+  "existencia": [
+    {
+      "producto": "Laptop Pro 14",
+      "bodega": "Central",
+      "existencia": 15
+    },
+    {
+      "producto": "Monitor 27",
+      "bodega": "Central",
+      "existencia": 40
+    },
+    {
+      "producto": "Mouse Inalambrico",
+      "bodega": "Central",
+      "existencia": 120
+    }
+  ],
+  "marketing": [
+    {
+      "plataforma": "Facebook",
+      "impresiones": 12000,
+      "clics": 420,
+      "costo_total": 150.5,
+      "leads": 30,
+      "conversiones": 8,
+      "ctr": 3.5,
+      "cpl": 5.02,
+      "conv": 1.9
+    },
+    {
+      "plataforma": "Instagram",
+      "impresiones": 9800,
+      "clics": 350,
+      "costo_total": 110.0,
+      "leads": 22,
+      "conversiones": 6,
+      "ctr": 3.57,
+      "cpl": 5.0,
+      "conv": 1.71
+    }
+  ]
+};
+// ===DATOS_FIN===
+
+const ventasTotales = datos.ventas_por_canal.reduce((s,r)=>s+r.ventas_totales,0);
+const numVentas = datos.ventas_por_canal.reduce((s,r)=>s+r.num_ventas,0);
+const ticketProm = (ventasTotales/numVentas).toFixed(2);
+const costoMkt = datos.marketing.reduce((s,r)=>s+r.costo_total,0);
+const leadsMkt = datos.marketing.reduce((s,r)=>s+r.leads,0);
+
+const fmtQ = n => "Q " + n.toLocaleString("es-GT", {minimumFractionDigits:0, maximumFractionDigits:2});
+
+const root = document.getElementById("dashboard-root");
+root.innerHTML = `
+  <div class="header">
+    <h1>DataCommerce GT — Dashboard Ejecutivo</h1>
+    <p>Data Warehouse dw_datacommerce · Indicadores de negocio · Proyecto Final de Ingeniería de Datos</p>
+  </div>
+  <div class="wrap">
+    <div class="kpi-row">
+      <div class="kpi-card"><div class="label">Ventas totales</div><div class="value">${fmtQ(ventasTotales)}</div><div class="sub">${numVentas} transacciones</div></div>
+      <div class="kpi-card"><div class="label">Ticket promedio</div><div class="value">${fmtQ(Number(ticketProm))}</div><div class="sub">por venta</div></div>
+      <div class="kpi-card"><div class="label">Costo en marketing</div><div class="value">${fmtQ(costoMkt)}</div><div class="sub">${leadsMkt} leads generados</div></div>
+      <div class="kpi-card"><div class="label">Productos con bajo stock</div><div class="value">1</div><div class="sub">Laptop Pro 14 (15 unidades)</div></div>
+    </div>
+
+    <div class="grid2">
+      <div class="panel"><h3>Ventas totales por canal</h3><canvas id="chartCanal"></canvas></div>
+      <div class="panel"><h3>Distribución por método de pago</h3><canvas id="chartPago"></canvas></div>
+    </div>
+
+    <div class="grid2">
+      <div class="panel"><h3>Monto vendido por producto</h3><canvas id="chartProductos"></canvas></div>
+      <div class="panel"><h3>Ventas por sucursal</h3><canvas id="chartSucursal"></canvas></div>
+    </div>
+
+    <div class="grid3">
+      <div class="panel">
+        <h3>Top clientes</h3>
+        <table><thead><tr><th>Cliente</th><th>Segmento</th><th>Total</th></tr></thead><tbody>
+        ${datos.top_clientes.map(c=>{
+          const cls = c.segmento==="Premium"?"badge-premium":c.segmento==="Frecuente"?"badge-frecuente":c.segmento==="Nuevo"?"badge-nuevo":"badge-na";
+          return `<tr><td>${c.nombre}</td><td><span class="badge ${cls}">${c.segmento}</span></td><td>${fmtQ(c.monto_total)}</td></tr>`;
+        }).join("")}
+        </tbody></table>
+      </div>
+      <div class="panel">
+        <h3>Existencia de inventario</h3>
+        <table><thead><tr><th>Producto</th><th>Bodega</th><th>Unidades</th></tr></thead><tbody>
+        ${datos.existencia.map(e=>`<tr><td>${e.producto}</td><td>${e.bodega}</td><td>${e.existencia}</td></tr>`).join("")}
+        </tbody></table>
+      </div>
+      <div class="panel">
+        <h3>Desempeño de marketing</h3>
+        <table><thead><tr><th>Plataforma</th><th>CTR</th><th>Costo/Lead</th><th>Conv.</th></tr></thead><tbody>
+        ${datos.marketing.map(m=>`<tr><td>${m.plataforma}</td><td>${m.ctr}%</td><td>${fmtQ(m.cpl)}</td><td>${m.conv}%</td></tr>`).join("")}
+        </tbody></table>
+      </div>
+    </div>
+
+    <p class="note">Datos cargados desde BigQuery (dataset dw_datacommerce) · Generado a partir de dia4_analisis_kpis · Actualiza corriendo ejecutar_dia4.py y refrescando estos valores</p>
+  </div>
+`;
+
+const navy = "#12213b", accent="#3ba7ff", accent2="#ffb547", ice="#8fb8f0";
+
+new Chart(document.getElementById("chartCanal"), {
+  type: "bar",
+  data: {
+    labels: datos.ventas_por_canal.map(r=>r.canal_venta),
+    datasets: [{ label:"Ventas totales (Q)", data: datos.ventas_por_canal.map(r=>r.ventas_totales), backgroundColor: navy, borderRadius:6 }]
+  },
+  options: { plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}} }
+});
+
+new Chart(document.getElementById("chartPago"), {
+  type: "doughnut",
+  data: {
+    labels: datos.metodo_pago.map(r=>r.metodo_pago),
+    datasets: [{ data: datos.metodo_pago.map(r=>r.num_ventas), backgroundColor:[navy, accent, accent2] }]
+  },
+  options: { plugins:{legend:{position:"bottom"}} }
+});
+
+new Chart(document.getElementById("chartProductos"), {
+  type: "bar",
+  data: {
+    labels: datos.top_productos.map(r=>r.nombre_producto),
+    datasets: [{ label:"Monto vendido (Q)", data: datos.top_productos.map(r=>r.monto_vendido), backgroundColor: accent, borderRadius:6 }]
+  },
+  options: { indexAxis:"y", plugins:{legend:{display:false}}, scales:{x:{beginAtZero:true}} }
+});
+
+new Chart(document.getElementById("chartSucursal"), {
+  type: "bar",
+  data: {
+    labels: datos.ventas_por_sucursal.map(r=>r.nombre_sucursal),
+    datasets: [{ label:"Ventas totales (Q)", data: datos.ventas_por_sucursal.map(r=>r.ventas_totales), backgroundColor: accent2, borderRadius:6 }]
+  },
+  options: { plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true}} }
+});
+</script>

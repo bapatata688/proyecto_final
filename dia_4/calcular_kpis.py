@@ -7,6 +7,7 @@ indicadores de negocio con pandas y guarda cada uno como CSV en data/kpis/.
 """
 
 from google.cloud import bigquery
+import json
 import kpis
 from config import PROJECT_ID, DATASET, CREDENTIALS_PATH, DATA_KPIS_DIR
 
@@ -14,6 +15,21 @@ from config import PROJECT_ID, DATASET, CREDENTIALS_PATH, DATA_KPIS_DIR
 def leer_tabla(client, nombre_tabla):
     table_id = f"{PROJECT_ID}.{DATASET}.{nombre_tabla}"
     return client.list_rows(table_id).to_dataframe()
+
+
+def exportar_resumen_json(resultados):
+    """
+    Guarda TODOS los KPIs en un solo JSON (data/kpis/kpis_resumen.json).
+    Este archivo es el que leen automáticamente dashboard.html,
+    generar_informe.js y generar_presentacion.js del Día 5 -- así,
+    con solo volver a correr este script, todo el Día 5 se actualiza
+    sin tener que editar números a mano en ningún lado.
+    """
+    resumen = {nombre: df.to_dict(orient="records") for nombre, df in resultados.items()}
+    salida = DATA_KPIS_DIR / "kpis_resumen.json"
+    with open(salida, "w", encoding="utf-8") as f:
+        json.dump(resumen, f, ensure_ascii=False, indent=2, default=str)
+    print(f"Resumen consolidado -> {salida}")
 
 
 def main():
@@ -57,6 +73,8 @@ def main():
         salida = DATA_KPIS_DIR / f"{nombre}.csv"
         df.to_csv(salida, index=False)
         print(f"{nombre}: {df.shape[0]} filas -> {salida}")
+
+    exportar_resumen_json(resultados)
 
     return resultados
 

@@ -19,8 +19,7 @@ logger = logging.getLogger(__name__)
 def _requerir_archivo(ruta):
     if not ruta.exists():
         raise FileNotFoundError(
-            f"No se encontró {ruta}. Coloca ahí el archivo entregado por "
-            "el instructor con ese nombre."
+            f"No se encontró {ruta} " 
         )
 
 

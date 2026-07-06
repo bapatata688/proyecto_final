@@ -15,20 +15,8 @@ instructor (`ventas.csv`, `productos.xlsx`, `clientes.json`, `inventario.db`,
 `movimientos_inventario`), así que el pipeline extrae y limpia **6 tablas**
 en total.
 
-## 2. Los dos ZIP — IMPORTANTE
 
-**Extrae ambos ZIP en la misma carpeta antes de ejecutar nada.** La parte 2
-depende de `config.py` y de los datos que genera la parte 1 en
-`data/interim/`.
-
-- **Parte 1 — Extracción**: `config.py`, `extract.py`, el script de
-  extracción, los 5 archivos fuente entregados, y su resultado ya extraído
-  (`data/interim/`).
-- **Parte 2 — Calidad y Limpieza**: `quality.py`, `clean.py`, los scripts de
-  perfilado y limpieza, el resultado ya limpio (`data/processed/`) y el
-  reporte de hallazgos.
-
-## 3. Estructura completa (ambas partes combinadas)
+## 2. Estructura completa (ambas partes combinadas)
 
 ```
 dia2/
