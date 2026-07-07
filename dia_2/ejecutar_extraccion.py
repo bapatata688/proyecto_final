@@ -24,6 +24,10 @@ FUENTES = [
 def main():
     for nombre, extraer in FUENTES:
         df = extraer()
+
+        for col in df.select_dtypes(include=["object"]).columns:
+            df[col] = df[col].astype(str)
+
         ruta_salida = config.INTERIM_DIR / f"{nombre}.parquet"
         df.to_parquet(ruta_salida, index=False)
         logger.info("%s: %s filas -> %s", nombre, len(df), ruta_salida.name)
