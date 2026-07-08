@@ -1,7 +1,6 @@
 """Ejecutamos la extracción de las fuentes y guardamos cada una en
-data/interim/ tal cual viene, sin limpiar  para que sea una evidencia del paso de
-extracción del día 2, separada de la limpieza
-
+data/interim/ tal cual viene, sin limpiar, para que sea una evidencia del paso de
+extracción del día 2, separada de la limpieza.
 """
 
 import logging
@@ -25,7 +24,8 @@ def main():
     for nombre, extraer in FUENTES:
         df = extraer()
 
-        for col in df.select_dtypes(include=["object"]).columns:
+        # Convertir todas las columnas de texto a tipo string
+        for col in df.select_dtypes(include=["object", "string"]).columns:
             df[col] = df[col].astype(str)
 
         ruta_salida = config.INTERIM_DIR / f"{nombre}.parquet"
